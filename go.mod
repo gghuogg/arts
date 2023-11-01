@@ -6,7 +6,6 @@ require (
 	github.com/IBM/sarama v1.41.2
 	github.com/alecthomas/kingpin/v2 v2.3.2
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.9+incompatible
-	github.com/anacrolix/utp v0.2.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/disintegration/imaging v1.6.2
 	github.com/fatih/color v1.15.0
@@ -41,10 +40,6 @@ require (
 	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
-	github.com/anacrolix/missinggo v1.3.0 // indirect
-	github.com/anacrolix/missinggo/perf v1.0.0 // indirect
-	github.com/anacrolix/missinggo/v2 v2.5.1 // indirect
-	github.com/anacrolix/sync v0.4.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
@@ -78,7 +73,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/huandu/xstrings v1.3.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
 	github.com/jcmturner/dnsutils/v2 v2.0.0 // indirect

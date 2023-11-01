@@ -167,7 +167,7 @@ func sendImage(accountNum uint64, photos []*telegram.SendImageFileDetail) *proto
 	return req
 }
 
-func sendFile(accountNum uint64, files []*telegram.SendFileDetail) *protobuf.RequestMessage {
+func SendFile(accountNum uint64, files []*telegram.SendFileDetail) *protobuf.RequestMessage {
 	list := make([]*protobuf.SendFileAction, 0)
 
 	for _, detail := range files {

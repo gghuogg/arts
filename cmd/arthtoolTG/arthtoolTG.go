@@ -161,80 +161,43 @@ func main() {
 	//log.Printf("返回消息：%s", r3.GetActionResult())
 	////
 	////time.Sleep(5 * time.Second)
-	//req4 := sendMessage(list)
-	//r4, err := c.Connect(ctx, req4)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r4.GetActionResult())
+	req4 := sendMessage(accountNum,list)
+	r4, err := c.Connect(ctx, req4)
+	if err != nil {
+		log.Fatalf("请求失败: %v", err)
+	}
+	log.Printf("返回消息：%s", r4.GetActionResult())
 
-	// 发送图片信息
-	//time.Sleep(5 * time.Second)
-	//req5 := sendImage(photoList)
-	//r5, err := c.Connect(ctx, req5)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r5.GetActionResult())
-	//time.Sleep(4 * time.Second)
 
-	//time.Sleep(5 * time.Second)
-	//data1 := &telegram.CreateGroupDetail{
-	//	Initiator:    19566961252,
-	//	GroupTitle:   "ksdjfkj",
-	//	GroupMembers: []uint64{8618818877128},
-	//}
-	//req6 := createGroup(data1)
-	//r6, err := c.Connect(ctx, req6)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r6.GetActionResult())
-	//time.Sleep(5 * time.Second)
-	//data2 := &telegram.AddGroupMemberDetail{
-	//	Initiator:  19566961252,
-	//	GroupTitle: "ksdjfkj",
-	//	AddMembers: []uint64{8618028658256},
-	//}
-	//req7 := addGroupMember(data2)
-	//r7, err := c.Connect(ctx, req7)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r7.GetActionResult())
+
+
 
 	// 发送文件
-	//time.Sleep(5 * time.Second)
-	//req7 := sendFile(FileList)
-	//r7, err := c.Connect(ctx, req7)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r7.GetActionResult())
-	//
-	//// 发送名片
-	//time.Sleep(5 * time.Second)
-	//req8 := contactCard(cardList)
-	//r8, err := c.Connect(ctx, req8)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r8.GetActionResult())
+	time.Sleep(5 * time.Second)
+	req7 := SendFile(accountNum,FileList)
+	r7, err := c.Connect(ctx, req7)
+	if err != nil {
+		log.Fatalf("请求失败: %v", err)
+	}
+	log.Printf("返回消息：%s", r7.GetActionResult())
 
-	//time.Sleep(5 * time.Second)
-	//listgroup := make([]*telegram.SendGroupMessageDetail, 0)
-	//sendTextgroup1 := &telegram.SendGroupMessageDetail{
-	//	Sender:     accountNum,
-	//	GroupTitle: "ksdjfkj",
-	//	SendText:   []string{"1111111"},
-	//}
-	//listgroup = append(listgroup, sendTextgroup1)
-	//req9 := sendGroupMessage(listgroup)
-	//r9, err := c.Connect(ctx, req9)
-	//if err != nil {
-	//	log.Fatalf("请求失败: %v", err)
-	//}
-	//log.Printf("返回消息：%s", r9.GetActionResult())
+
+
+	time.Sleep(5 * time.Second)
+	listgroup := make([]*telegram.SendGroupMessageDetail, 0)
+	sendTextgroup1 := &telegram.SendGroupMessageDetail{
+		Sender:     accountNum,
+		GroupTitle: "ksdjfkj",
+		SendText:   []string{"1111111"},
+	}
+	listgroup = append(listgroup, sendTextgroup1)
+	req9 := sendGroupMessage(listgroup)
+	r9, err := c.Connect(ctx, req9)
+	if err != nil {
+		log.Fatalf("请求失败: %v", err)
+	}
+	log.Printf("返回消息：%s", r9.GetActionResult())
+
 
 }
 
@@ -353,3 +316,43 @@ func sendGroupMessage(data []*telegram.SendGroupMessageDetail) *protobuf.Request
 
 	return req
 }
+
+
+func SendFile(accountNum uint64, files []*telegram.SendFileDetail) *protobuf.RequestMessage {
+	list := make([]*protobuf.SendFileAction, 0)
+
+	for _, detail := range files {
+		tmp := &protobuf.SendFileAction{}
+		sendData := make(map[uint64]*protobuf.UintTgFileDetailValue)
+		sendData[detail.Sender] = &protobuf.UintTgFileDetailValue{Key: detail.Receiver}
+		fileDetail := make([]*protobuf.FileDetailValue, 0)
+		for _, file := range detail.FileType {
+			fileDetail = append(fileDetail, &protobuf.FileDetailValue{
+				FileType: file.FileType,
+				SendType: file.SendType,
+				Path:     file.Path,
+				Name:     file.Name,
+				FileByte: file.FileBytes,
+			})
+		}
+		sendData[detail.Sender].Value = fileDetail
+		tmp.SendTgData = sendData
+		list = append(list, tmp)
+	}
+
+	req := &protobuf.RequestMessage{
+		Action:  protobuf.Action_SEND_FILE,
+		Type:    "telegram",
+		Account: accountNum,
+		ActionDetail: &protobuf.RequestMessage_SendFileDetail{
+			SendFileDetail: &protobuf.SendFileDetail{
+				Details: list,
+			},
+		},
+	}
+
+	return req
+
+}
+
+

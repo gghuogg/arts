@@ -67,9 +67,9 @@ func main() {
 	a.Flag("config.file", "Arthas configuration file path.").
 		Default("arthas.yml").StringVar(&cfg.configFile)
 	a.Flag("web.name-space", "namespace for service.").
-		Default("kk").StringVar(&cfg.rpc.NameSpace)
+		Default("ghxkk").StringVar(&cfg.rpc.NameSpace)
 	a.Flag("web.env", "env for service.").
-		Default("kk").StringVar(&cfg.rpc.Env)
+		Default("ghxkk").StringVar(&cfg.rpc.Env)
 	a.Flag("web.version", "version for service.").
 		Default("latest").StringVar(&cfg.rpc.Version)
 
@@ -78,7 +78,7 @@ func main() {
 
 	//10.8.5.21:2379
 	a.Flag("etcd.endpoint", "Connect etcd server address.").
-		Default("10.8.5.21:2379").StringsVar(&cfg.etcd.EndPoint)
+		Default("192.168.73.92:2379").StringsVar(&cfg.etcd.EndPoint)
 	//Default("127.0.0.1:2379").StringsVar(&cfg.etcd.EndPoint)
 
 	a.Flag("etcd.username", "Connect etcd server username.").
@@ -97,7 +97,7 @@ func main() {
 		Default(kafka.Type).StringVar(&cfg.callback.Type)
 
 	a.Flag("callback.server.address", "Callback server address.").
-		Default("101.35.51.132:30092").StringsVar(&cfg.callback.Addrs)
+		Default("192.168.73.92:9092").StringsVar(&cfg.callback.Addrs)
 
 	a.Flag("callback.server.username", "Callback server username.").
 		Default().StringVar(&cfg.callback.Username)
@@ -106,7 +106,7 @@ func main() {
 		Default().StringVar(&cfg.callback.Password)
 
 	a.Flag("prometheus.Address", "Prometheus server Address.").
-		Default("http://127.0.0.1:39090").StringVar(&cfg.prometheus.Address)
+		Default("http://192.168.73.92:9090").StringVar(&cfg.prometheus.Address)
 
 	a.Flag("prometheus.Username", "Prometheus server Username.").
 		Default().StringVar(&cfg.prometheus.Username)

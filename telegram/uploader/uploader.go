@@ -13,7 +13,6 @@ import (
 	"github.com/gotd/td/telegram/peers"
 	"github.com/gotd/td/telegram/uploader"
 	"github.com/gotd/td/tg"
-	"github.com/jedib0t/go-pretty/v6/progress"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/iyear/tdl/pkg/kv"

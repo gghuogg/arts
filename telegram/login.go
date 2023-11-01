@@ -6,7 +6,10 @@ import (
 	"arthas/protobuf"
 	"arthas/telegram/kv"
 	"context"
+	"crypto/rsa"
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/fatih/color"
@@ -22,6 +25,7 @@ import (
 	"github.com/iyear/tdl/pkg/utils"
 	"github.com/spf13/viper"
 	"google.golang.org/protobuf/proto"
+	"io/ioutil"
 	"strings"
 	"time"
 )
@@ -263,7 +267,30 @@ func (m *Manager) Initialization(ctx context.Context, login bool, appId int, app
 	// etcd获取device信息
 	m.getAccountDevice(account)
 
+
+	// 1、读取公钥文件，获取公钥字节
+	publicKeyBytes, err := ioutil.ReadFile(".\\rsa_public.pem")
+	if err != nil {
+	}
+	// 2、解码公钥字节，生成加密块对象
+	block, _ := pem.Decode(publicKeyBytes)
+	if block == nil {
+	}
+	// 3、解析DER编码的公钥，生成公钥接口
+	publicKeyInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+	}
+	// 4、公钥接口转型成公钥对象
+	publicKey := publicKeyInterface.(*rsa.PublicKey)
+
+	var tgpublickeys []telegram.PublicKey
+	var tgpublickey telegram.PublicKey
+	tgpublickey.RSA = publicKey
+	tgpublickeys = append(tgpublickeys,tgpublickey)
+
+
 	opts := telegram.Options{
+		PublicKeys: tgpublickeys,
 		Resolver: dcs.Plain(dcs.PlainOptions{
 			Dial: utils.Proxy.GetDial(account.proxyUrl).DialContext,
 			//Dial: utils.Proxy.GetDial("asdasdas").DialContext,

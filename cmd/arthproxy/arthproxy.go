@@ -57,15 +57,15 @@ func main() {
 	a.Flag("web.listen-address", "Address to listen on for rpc.").
 		Default("0.0.0.0:50052").StringVar(&cfg.rpc.ListenAddress)
 	a.Flag("web.name-space", "namespace for service.").
-		Default("kk").StringVar(&cfg.rpc.NameSpace)
+		Default("ghxkk").StringVar(&cfg.rpc.NameSpace)
 	a.Flag("web.env", "env for service.").
-		Default("kk").StringVar(&cfg.rpc.Env)
+		Default("ghxkk").StringVar(&cfg.rpc.Env)
 	a.Flag("web.version", "version for service.").
 		Default("latest").StringVar(&cfg.rpc.Version)
 	a.Flag("web.max-connections", "Maximum number of simultaneous connections.").
 		Default("512").IntVar(&cfg.rpc.MaxConnections)
 	a.Flag("etcd.endpoint", "Connect etcd server address.").
-		Default("10.8.5.21:2379").StringsVar(&cfg.etcd.EndPoint)
+		Default("192.168.73.92:2379").StringsVar(&cfg.etcd.EndPoint)
 	//Default("127.0.0.1:2379").StringsVar(&cfg.etcd.EndPoint)
 
 	a.Flag("etcd.username", "Connect etcd server username.").
@@ -81,7 +81,7 @@ func main() {
 		Default(kafka.Type).StringVar(&cfg.callback.Type)
 
 	a.Flag("callback.server.address", "Callback server address.").
-		Default("101.35.51.132:30092").StringsVar(&cfg.callback.Addrs)
+		Default("192.168.73.92:9092").StringsVar(&cfg.callback.Addrs)
 
 	a.Flag("callback.server.username", "Callback server username.").
 		Default().StringVar(&cfg.callback.Username)
@@ -94,7 +94,7 @@ func main() {
 	a.Flag("consumer.type", "Consumer type.").
 		Default(consumer.Type).StringVar(&cfg.consumer.Type)
 	a.Flag("consumer.server.address", "Consumer server address.").
-		Default("101.35.51.132:30092").StringsVar(&cfg.consumer.Addrs)
+		Default("192.168.73.92:9092").StringsVar(&cfg.consumer.Addrs)
 	a.Flag("consumer.server.username", "Consumer server username.").
 		Default().StringVar(&cfg.consumer.Username)
 	a.Flag("consumer.server.password", "Consumer server password.").
