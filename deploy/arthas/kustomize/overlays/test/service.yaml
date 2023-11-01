@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthas-headless
+spec:
+  ports:
+    - name: tcp
+      port: 31502
+      protocol: TCP
+      targetPort: 31502
+  selector:
+    app/name: arthas
+  type: NodePort

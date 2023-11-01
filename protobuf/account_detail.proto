@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+option go_package = "./protobuf";
+
+message AccountDetail{
+  uint64 userJid = 1;
+  bytes privateKey = 2;
+  bytes publicKey = 3;
+  bytes publicMsgKey = 4;
+  bytes privateMsgKey = 5;
+  bytes identify = 6;
+  bytes resumptionSecret = 7;
+  bytes clientPayload = 8;
+}
+
+message TgAccountDetail {
+    string phoneNumber = 1;
+    uint64   appId    =2;
+    string   appHash   =3;
+}
+
+message AccountLogin{
+  bool isLogin  = 1;
+  string   grpcServer =2;
+  uint64 userJid =3;
+  string  LastName =4;
+  string   FirstName  =5;
+  int64 UserID      =6;
+  string   UserName    =7;
+}
+
+message ServiceInfo{
+  string IP = 1;
+  uint32 Connections = 2;
+}
+
+message MyUserTest{
+  string Name = 1;
+  string Age = 2;
+  string Email = 3;
+}
+
+message TgAccountSessionTest{
+  bytes jsonByte = 1;
+}
+
+//
+//message TgAccountSession{
+//  int32 version = 1;
+//  Data  data = 2;
+////    bytes session = 1;
+//}
+//
+//message Data{
+//  Config  config = 1;
+//  int64   dC = 2;
+//  string  addr = 3;
+//  bytes   authKey = 4;
+//  bytes   authKeyID = 5;
+//  int64   salt = 6;
+//}
+//
+//message Config {
+//  bool blockedMode = 1;
+//  bool forceTryIpv6 = 2;
+//  int32 date = 3;
+//  int32 expires = 4;
+//  bool testMode = 5;
+//  int32 thisDC = 6;
+//  repeated DCOption dCOptions = 7;
+//  string dCTxtDomainName = 8;
+//  int32 tmpSessions = 9;
+//  int32 webfileDCID = 10;
+//}
+//
+//message DCOption{
+//  uint32 flags = 1;
+//  bool ipv6 = 2;
+//  bool mediaOnly = 3;
+//  bool tCPObfuscatedOnly = 4;
+//  bool cDN = 5;
+//  bool static = 6;
+//  bool thisPortOnly = 7;
+//  int32 iD = 8;
+//  string iPAddress = 9;
+//  int32 Port = 10;
+//  bytes secret = 11;
+//
+//}
+
+message TgAccountSession{
+  int32 Version = 1;
+  Data  Data = 2;
+  //    bytes session = 1;
+}
+
+message Data{
+  Config  Config = 1;
+  int32   DC = 2;
+  string  Addr = 3;
+  string   AuthKey = 4;
+  string   AuthKeyID = 5;
+  int64   Salt = 6;
+}
+
+message Config {
+  bool BlockedMode = 1;
+  bool ForceTryIpv6 = 2;
+  int32 Date = 3;
+  int32 Expires = 4;
+  bool TestMode = 5;
+  int32 ThisDC = 6;
+  repeated DCOption DCOptions = 7;
+  string DCTxtDomainName = 8;
+  int32 TmpSessions = 9;
+  int32 WebfileDCID = 10;
+}
+
+message DCOption{
+  uint32 Flags = 1;
+  bool Ipv6 = 2;
+  bool MediaOnly = 3;
+  bool TCPObfuscatedOnly = 4;
+  bool CDN = 5;
+  bool Static = 6;
+  bool ThisPortOnly = 7;
+  int32 ID = 8;
+  string IPAddress = 9;
+  int32 Port = 10;
+  bytes Secret = 11;
+
+}

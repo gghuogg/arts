@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+option go_package = ".;main";
+option java_package = "com.whatsapp";
+option java_multiple_files = true;
+
+message XmppValue {
+  oneof value {
+    string string = 1;
+    bytes data = 2;
+  }
+}
+
+message XmppAttributeValue {
+  oneof value {
+    string string = 1;
+    bytes data = 2;
+
+    string WADomainJID = 11;
+    string WACallDomainJID = 12;
+    string WAIdentifierJID = 13;
+    string WAChatJID = 14;
+    string WABroadcastJID = 15;
+    string WANewsletterJID = 16;
+    string WAGroupJID = 17;
+    string WAUserJID = 18;
+    string WAPhoneNumberUserJID = 19;
+    string WALIDUserJID = 20;
+    string WAIncomingStatusJID = 21;
+    string WASignalUniqueBroadcastJID = 22;
+    string WADeviceJID = 23;
+    string WAPhoneNumberDeviceJID = 24;
+    string WALIDDeviceJID = 25;
+    string WALocationJID = 26;
+    string WAPhoneNumberLocationJID = 27;
+    string WALIDLocationJID = 28;
+    string WAGroupCallJID = 29;
+  }
+}
+
+message XmppAttribute {
+  required string key = 1;
+  required XmppAttributeValue value = 2;
+}
+
+message XmppStanzaElement {
+  required string name = 1;
+  repeated XmppAttribute attributes = 2;
+  repeated XmppStanzaElement children = 3;
+  optional XmppValue value = 4;
+}
+
+service XmppStream {
+  rpc connect(stream XmppStanzaElement) returns (stream XmppStanzaElement);
+}

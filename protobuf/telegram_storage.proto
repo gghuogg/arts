@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "./protobuf";
+
+
+message AccessHashValue {
+  int64 AccessHash = 1;
+}
+
+
+message PhoneStoragekey {
+  string Prefix = 1;
+  int64 ID = 2;
+}
+
+message ContactsHash{
+  string hash = 1;
+}

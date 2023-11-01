@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app/name: arthas
+  name: arthas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app/name: arthas
+  template:
+    metadata:
+      labels:
+        app/name: arthas
+      namespace: arts-system
+    spec:
+      containers:
+        - image: liuzhihu1-docker.pkg.coding.net/arts/arts/arthas:latest
+          name: arthas
+          imagePullPolicy: Always
+          resources: {}
+      imagePullSecrets:
+        - name: arts-image-secret
+      restartPolicy: Always

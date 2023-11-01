@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app/name: arthproxy
+  name: arthproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app/name: arthproxy
+  template:
+    metadata:
+      labels:
+        app/name: arthproxy
+      namespace: arts-system
+    spec:
+      containers:
+        - image: liuzhihu1-docker.pkg.coding.net/arts/arts/arthproxy:latest
+          name: arthproxy
+          imagePullPolicy: Always
+          resources: {}
+      imagePullSecrets:
+        - name: arts-image-secret
+      restartPolicy: Always

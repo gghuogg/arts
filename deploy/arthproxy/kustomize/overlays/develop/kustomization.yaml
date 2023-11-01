@@ -1,0 +1,7 @@
+resources:
+- ../../base
+
+patchesStrategicMerge:
+  - deployment.yaml
+
+namespace: arts-system

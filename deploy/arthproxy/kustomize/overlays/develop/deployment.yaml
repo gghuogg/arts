@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app/name: arthproxy
+  name: arthproxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app/name: arthproxy
+  template:
+    metadata:
+      labels:
+        app/name: arthproxy
+      namespace: arts-system
+    spec:
+      containers:
+        - name: arthproxy
+          command:
+            - arthproxy
+            - --web.listen-address=0.0.0.0:50052
+            - --web.name-space=prod
+            - --web.env=prod
+            - --web.version=latest
+            - --callback.server.address=kafka-headless:9092
+            - --consumer.server.address=kafka-headless:9092
+            - --etcd.endpoint=8.219.159.49:43279
+            - --etcd.username=root
+            - --etcd.password=HpIF14zNxvNBvGsg_Au

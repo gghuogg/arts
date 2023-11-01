@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app/name: arthas
+  name: arthas
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app/name: arthas
+  template:
+    metadata:
+      labels:
+        app/name: arthas
+      namespace: arts-system
+    spec:
+      containers:
+        - name: arthas
+          image: liuzhihu1-docker.pkg.coding.net/arts/arts/arthas:a7972b92d16247f4c3afeb603dc29c2f874ad96b
+          command:
+            - /app/arthas
+            - telegram
+            - --web.listen-address=0.0.0.0:31502
+            - --web.name-space=test
+            - --web.env=test
+            - --web.version=latest
+            - --callback.server.address=kafka-headless:9092
+            - --etcd.endpoint=8.219.159.49:43279
+            - --etcd.username=root
+            - --etcd.password=HpIF14zNxvNBvGsg_Au
+            - --prometheus.Address=http://127.0.0.1:9091

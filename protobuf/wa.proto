@@ -1,0 +1,1346 @@
+syntax = "proto2";
+
+option go_package = ".;main";
+option java_package = "com.whatsapp";
+option java_multiple_files = true;
+
+
+enum KeepInChatType {
+  KeepInChatType_UNKNOWN = 0;
+  KEEP_FOR_ALL = 1;
+  UNKEEP_FOR_ALL = 2;
+}
+
+message ActionLink {
+  optional string url = 1;
+  optional string button_title = 2;
+}
+
+message ClientPayload {
+  optional uint64 username = 1;
+  optional bool passive = 3;
+  optional UserAgent user_agent = 5;
+  optional WebInfo web_info = 6;
+  optional string push_name = 7;
+  optional sfixed32 session_id = 9;
+  optional bool short_connect = 10;
+  optional ConnectType connect_type = 12;
+  optional ConnectReason connect_reason = 13;
+  repeated int32 shards = 14;
+  optional DNSSource dns_source = 15;
+  optional uint32 connect_attempt_count = 16;
+  optional uint32 agent = 17;
+  optional uint32 device = 18;
+  optional CompanionRegData reg_data = 19;
+  optional Product product = 20;
+  optional bytes fb_cat = 21;
+  optional bytes fb_user_agent = 22;
+  optional bool oc = 23;
+  optional uint32 lc = 24;
+  optional IOSAppExtension ios_app_extension = 30;
+  optional uint64 fb_app_id = 31;
+  optional string fb_device_id = 32;
+
+  enum ConnectReason {
+    PUSH = 0;
+    USER_ACTIVATED = 1;
+    SCHEDULED = 2;
+    ERROR_RECONNECT = 3;
+    NETWORK_SWITCH = 4;
+    PING_RECONNECT = 5;
+  }
+
+  enum ConnectType {
+    CELLULAR_UNKNOWN = 0;
+    WIFI_UNKNOWN = 1;
+    CELLULAR_EDGE = 100;
+    CELLULAR_IDEN = 101;
+    CELLULAR_UMTS = 102;
+    CELLULAR_EVDO = 103;
+    CELLULAR_GPRS = 104;
+    CELLULAR_HSDPA = 105;
+    CELLULAR_HSUPA = 106;
+    CELLULAR_HSPA = 107;
+    CELLULAR_CDMA = 108;
+    CELLULAR_1XRTT = 109;
+    CELLULAR_EHRPD = 110;
+    CELLULAR_LTE = 111;
+    CELLULAR_HSPAP = 112;
+  }
+
+  enum IOSAppExtension {
+    SHARE_EXTENSION = 0;
+    SERVICE_EXTENSION = 1;
+    INTENTS_EXTENSION = 2;
+  }
+
+  enum Product {
+    WHATSAPP = 0;
+    MESSENGER = 1;
+  }
+
+  message CompanionRegData {
+    optional bytes e_regid = 1;
+    optional bytes e_keytype = 2;
+    optional bytes e_ident = 3;
+    optional bytes e_skey_id = 4;
+    optional bytes e_skey_val = 5;
+    optional bytes e_skey_sig = 6;
+    optional bytes build_hash = 7;
+    optional bytes companion_props = 8;
+  }
+
+  message DNSSource {
+    optional DNSResolutionMethod dns_method = 15;
+    optional bool app_cached = 16;
+
+    enum DNSResolutionMethod {
+      SYSTEM = 0;
+      GOOGLE = 1;
+      HARDCODED = 2;
+      OVERRIDE = 3;
+      FALLBACK = 4;
+    }
+  }
+
+  message UserAgent {
+    optional Platform platform = 1;
+    optional AppVersion app_version = 2;
+    optional string mcc = 3;
+    optional string mnc = 4;
+    optional string os_version = 5;
+    optional string manufacturer = 6;
+    optional string device = 7;
+    optional string os_build_number = 8;
+    optional string phone_id = 9;
+    optional ReleaseChannel release_channel = 10;
+    optional string locale_language_iso_639_1 = 11;
+    optional string locale_country_iso_3166_1_alpha_2 = 12;
+    optional string device_board = 13;
+
+    enum Platform {
+      ANDROID = 0;
+      IOS = 1;
+      WINDOWS_PHONE = 2;
+      BLACKBERRY = 3;
+      BLACKBERRYX = 4;
+      S40 = 5;
+      S60 = 6;
+      PYTHON_CLIENT = 7;
+      TIZEN = 8;
+      ENTERPRISE = 9;
+      SMB_ANDROID = 10;
+      KAIOS = 11;
+      SMB_IOS = 12;
+      WINDOWS = 13;
+      WEB = 14;
+      PORTAL = 15;
+      GREEN_ANDROID = 16;
+      GREEN_IPHONE = 17;
+      BLUE_ANDROID = 18;
+      BLUE_IPHONE = 19;
+      FBLITE_ANDROID = 20;
+      MLITE_ANDROID = 21;
+      IGLITE_ANDROID = 22;
+      PAGE = 23;
+      MACOS = 24;
+      OCULUS_MSG = 25;
+      OCULUS_CALL = 26;
+      MILAN = 27;
+    }
+
+    enum ReleaseChannel {
+      RELEASE = 0;
+      BETA = 1;
+      ALPHA = 2;
+      DEBUG = 3;
+    }
+
+    message AppVersion {
+      optional uint32 primary = 1;
+      optional uint32 secondary = 2;
+      optional uint32 tertiary = 3;
+      optional uint32 quaternary = 4;
+      optional uint32 quinary = 5;
+    }
+  }
+
+  message WebInfo {
+    optional string ref_token = 1;
+    optional string version = 2;
+    optional WebdPayload webd_payload = 3;
+    optional WebSubPlatform web_sub_platform = 4;
+
+    enum WebSubPlatform {
+      WEB_BROWSER = 0;
+      APP_STORE = 1;
+      WIN_STORE = 2;
+      DARWIN = 3;
+      WIN32 = 4;
+    }
+
+    message WebdPayload {
+      optional bool uses_participant_in_key = 1;
+      optional bool supports_starred_messages = 2;
+      optional bool supports_document_messages = 3;
+      optional bool supports_url_messages = 4;
+      optional bool supports_media_retry = 5;
+      optional bool supports_e2e_image = 6;
+      optional bool supports_e2e_video = 7;
+      optional bool supports_e2e_audio = 8;
+      optional bool supports_e2e_document = 9;
+      optional string document_types = 10;
+      optional bytes features = 11;
+    }
+  }
+}
+
+message ContextInfo {
+  optional string stanza_id = 1;
+  optional string participant = 2;
+  optional Message quoted_message = 3;
+  optional string remote_jid = 4;
+  repeated string mentioned_jid = 15;
+  optional string conversion_source = 18;
+  optional bytes conversion_data = 19;
+  optional uint32 conversion_delay_seconds = 20;
+  optional uint32 forwarding_score = 21;
+  optional bool is_forwarded = 22;
+  optional AdReplyInfo quoted_ad = 23;
+  optional MessageKey placeholder_key = 24;
+  optional uint32 expiration = 25;
+  optional int64 ephemeral_setting_timestamp = 26;
+  optional bytes ephemeral_shared_secret = 27;
+  optional ExternalAdReplyInfo external_ad_reply = 28;
+  optional string entry_point_conversion_source = 29;
+  optional string entry_point_conversion_app = 30;
+  optional uint32 entry_point_conversion_delay_seconds = 31;
+  optional DisappearingMode disappearing_mode = 32;
+  optional ActionLink action_link = 33;
+  optional string group_subject = 34;
+  optional string parent_group_jid = 35;
+
+  message AdReplyInfo {
+    optional string advertiser_name = 1;
+    optional MediaType media_type = 2;
+    optional bytes jpeg_thumbnail = 16;
+    optional string caption = 17;
+
+    enum MediaType {
+      NONE = 0;
+      IMAGE = 1;
+      VIDEO = 2;
+    }
+  }
+
+  message ExternalAdReplyInfo {
+    optional string title = 1;
+    optional string body = 2;
+    optional MediaType media_type = 3;
+    optional string thumbnail_url = 4;
+    optional string media_url = 5;
+    optional bytes thumbnail = 6;
+    optional string source_type = 7;
+    optional string source_id = 8;
+    optional string source_url = 9;
+    optional bool contains_auto_reply = 10;
+    optional bool render_larger_thumbnail = 11;
+    optional bool show_ad_attribution = 12;
+
+    enum MediaType {
+      NONE = 0;
+      IMAGE = 1;
+      VIDEO = 2;
+    }
+  }
+}
+
+message DeviceListMetadata {
+  optional bytes sender_key_hash = 1;
+  optional uint64 sender_timestamp = 2;
+  repeated uint32 sender_key_indexes = 3 [packed = true];
+  optional bytes recipient_key_hash = 8;
+  optional uint64 recipient_timestamp = 9;
+  repeated uint32 recipient_key_indexes = 10 [packed = true];
+}
+
+message DisappearingMode {
+  optional Initiator initiator = 1;
+
+  enum Initiator {
+    CHANGED_IN_CHAT = 0;
+    INITIATED_BY_ME = 1;
+    INITIATED_BY_OTHER = 2;
+  }
+}
+
+message HandshakeMessage {
+  optional ClientHello client_hello = 2;
+  optional ServerHello server_hello = 3;
+  optional ClientFinish client_finish = 4;
+
+  message ClientFinish {
+    optional bytes static = 1;
+    optional bytes payload = 2;
+  }
+
+  message ClientHello {
+    optional bytes ephemeral = 1;
+    optional bytes static = 2;
+    optional bytes payload = 3;
+  }
+
+  message ServerHello {
+    optional bytes ephemeral = 1;
+    optional bytes static = 2;
+    optional bytes payload = 3;
+  }
+}
+
+message HydratedTemplateButton {
+  optional uint32 index = 4;
+
+  oneof hydrated_button {
+    HydratedQuickReplyButton quick_reply_button = 1;
+    HydratedURLButton url_button = 2;
+    HydratedCallButton call_button = 3;
+  }
+
+  message HydratedCallButton {
+    optional string display_text = 1;
+    optional string phone_number = 2;
+  }
+
+  message HydratedQuickReplyButton {
+    optional string display_text = 1;
+    optional string id = 2;
+  }
+
+  message HydratedURLButton {
+    optional string display_text = 1;
+    optional string url = 2;
+  }
+}
+
+message InteractiveAnnotation {
+  repeated Point polygonVertices = 1;
+
+  oneof action {
+    Location location = 2;
+  }
+}
+
+message LocalizedName {
+  optional string lg = 1;
+  optional string lc = 2;
+  optional string verified_name = 3;
+}
+
+message Location {
+  optional double degrees_latitude = 1;
+  optional double degrees_longitude = 2;
+  optional string name = 3;
+}
+
+message Message {
+  optional string conversation = 1;
+  optional SenderKeyDistributionMessage sender_key_distribution_message = 2;
+  optional ImageMessage image_message = 3;
+  optional ContactMessage contact_message = 4;
+  optional LocationMessage location_message = 5;
+  optional ExtendedTextMessage extended_text_message = 6;
+  optional DocumentMessage document_message = 7;
+  optional AudioMessage audio_message = 8;
+  optional VideoMessage video_message = 9;
+  optional Call call = 10;
+  optional Chat chat = 11;
+  optional ProtocolMessage protocol_message = 12;
+  optional ContactsArrayMessage contacts_array_message = 13;
+  optional HighlyStructuredMessage highly_structured_message = 14;
+  optional SenderKeyDistributionMessage fast_ratchet_key_sender_key_distribution_message = 15;
+  optional SendPaymentMessage send_payment_message = 16;
+  optional LiveLocationMessage live_location_message = 18;
+  optional RequestPaymentMessage request_payment_message = 22;
+  optional DeclinePaymentRequestMessage decline_payment_request_message = 23;
+  optional CancelPaymentRequestMessage cancel_payment_request_message = 24;
+  optional TemplateMessage template_message = 25;
+  optional StickerMessage sticker_message = 26;
+  optional GroupInviteMessage group_invite_message = 28;
+  optional TemplateButtonReplyMessage template_button_reply_message = 29;
+  optional ProductMessage product_message = 30;
+  optional DeviceSentMessage device_sent_message = 31;
+  optional MessageContextInfo message_context_info = 35;
+  optional ListMessage list_message = 36;
+  optional FutureProofMessage view_once_message = 37;
+  optional OrderMessage order_message = 38;
+  optional ListResponseMessage list_response_message = 39;
+  optional FutureProofMessage ephemeral_message = 40;
+  optional ButtonsMessage buttons_message = 42;
+  optional ButtonsResponseMessage buttons_response_message = 43;
+  optional PaymentInviteMessage payment_invite_message = 44;
+  optional InteractiveMessage interactive_message = 45;
+  optional ReactionMessage reaction_message = 46;
+  optional InteractiveResponseMessage interactive_response_message = 48;
+  optional PollCreationMessage poll_creation_message = 49;
+  optional PollUpdateMessage poll_update_message = 50;
+  optional KeepInChatMessage keep_in_chat_message = 51;
+  optional FutureProofMessage document_with_caption_message = 53;
+  optional RequestPhoneNumberMessage request_phone_number_message = 54;
+  optional FutureProofMessage view_once_message_v2 = 55;
+  optional EncReactionMessage enc_reaction_message = 56;
+  optional FutureProofMessage edited_message = 58;
+  optional PollCreationMessage poll_creation_message_v2 = 60;
+
+  enum PeerDataOperationRequestType {
+    UPLOAD_STICKER = 0;
+    SEND_RECENT_STICKER_BOOTSTRAP = 1;
+    GENERATE_LINK_PREVIEW = 2;
+  }
+
+  message AppStateFatalExceptionNotification {
+    repeated string collection_names = 1;
+    optional int64 timestamp = 2;
+  }
+
+  message AppStateSyncKey {
+    optional AppStateSyncKeyId key_id = 1;
+    optional AppStateSyncKeyData key_data = 2;
+  }
+
+  message AppStateSyncKeyData {
+    optional bytes key_data = 1;
+    optional AppStateSyncKeyFingerprint fingerprint = 2;
+    optional int64 timestamp = 3;
+  }
+
+  message AppStateSyncKeyFingerprint {
+    optional uint32 raw_id = 1;
+    optional uint32 current_index = 2;
+    repeated uint32 device_indexes = 3 [packed = true];
+  }
+
+  message AppStateSyncKeyId {
+    optional bytes key_id = 1;
+  }
+
+  message AppStateSyncKeyRequest {
+    repeated AppStateSyncKeyId key_ids = 1;
+  }
+
+  message AppStateSyncKeyShare {
+    repeated AppStateSyncKey keys = 1;
+  }
+
+  message AudioMessage {
+    optional string url = 1;
+    optional string mimetype = 2;
+    optional bytes file_sha256 = 3;
+    optional uint64 file_length = 4;
+    optional uint32 seconds = 5;
+    optional bool ptt = 6;
+    optional bytes media_key = 7;
+    optional bytes file_enc_sha256 = 8;
+    optional string direct_path = 9;
+    optional int64 media_key_timestamp = 10;
+    optional ContextInfo context_info = 17;
+    optional bytes streaming_sidecar = 18;
+    optional bytes waveform = 19;
+    optional fixed32 background_argb = 20;
+  }
+
+  message ButtonsMessage {
+    optional string content_text = 6;
+    optional string footer_text = 7;
+    optional ContextInfo context_info = 8;
+    repeated Button buttons = 9;
+    optional HeaderType header_type = 10;
+
+    oneof header {
+      string text = 1;
+      DocumentMessage document_message = 2;
+      ImageMessage image_message = 3;
+      VideoMessage video_message = 4;
+      LocationMessage location_message = 5;
+    }
+
+    enum HeaderType {
+      UNKNOWN = 0;
+      EMPTY = 1;
+      TEXT = 2;
+      DOCUMENT = 3;
+      IMAGE = 4;
+      VIDEO = 5;
+      LOCATION = 6;
+    }
+
+    message Button {
+      optional string button_id = 1;
+      optional ButtonText button_text = 2;
+      optional Type type = 3;
+      optional NativeFlowInfo native_flow_info = 4;
+
+      enum Type {
+        UNKNOWN = 0;
+        RESPONSE = 1;
+        NATIVE_FLOW = 2;
+      }
+
+      message ButtonText {
+        optional string display_text = 1;
+      }
+
+      message NativeFlowInfo {
+        optional string name = 1;
+        optional string params_json = 2;
+      }
+    }
+  }
+
+  message ButtonsResponseMessage {
+    optional string selected_button_id = 1;
+    optional ContextInfo context_info = 3;
+    optional Type type = 4;
+
+    oneof response {
+      string selected_display_text = 2;
+    }
+
+    enum Type {
+      UNKNOWN = 0;
+      DISPLAY_TEXT = 1;
+    }
+  }
+
+  message Call {
+    optional bytes call_key = 1;
+    optional string conversion_source = 2;
+    optional bytes conversion_data = 3;
+    optional uint32 conversion_delay_seconds = 4;
+  }
+
+  message CancelPaymentRequestMessage {
+    optional MessageKey key = 1;
+  }
+
+  message Chat {
+    optional string display_name = 1;
+    optional string id = 2;
+  }
+
+  message ContactMessage {
+    optional string display_name = 1;
+    optional string vcard = 16;
+    optional ContextInfo context_info = 17;
+  }
+
+  message ContactsArrayMessage {
+    optional string display_name = 1;
+    repeated ContactMessage contacts = 2;
+    optional ContextInfo context_info = 17;
+  }
+
+  message DeclinePaymentRequestMessage {
+    optional MessageKey key = 1;
+  }
+
+  message DeviceSentMessage {
+    optional string destination_jid = 1;
+    optional Message message = 2;
+    optional string phash = 3;
+  }
+
+  message DocumentMessage {
+    optional string url = 1;
+    optional string mimetype = 2;
+    optional string title = 3;
+    optional bytes file_sha256 = 4;
+    optional uint64 file_length = 5;
+    optional uint32 page_count = 6;
+    optional bytes media_key = 7;
+    optional string file_name = 8;
+    optional bytes file_enc_sha256 = 9;
+    optional string direct_path = 10;
+    optional int64 media_key_timestamp = 11;
+    optional bool contact_vcard = 12;
+    optional string thumbnail_direct_path = 13;
+    optional bytes thumbnail_sha256 = 14;
+    optional bytes thumbnail_enc_sha256 = 15;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+    optional uint32 thumbnail_height = 18;
+    optional uint32 thumbnail_width = 19;
+    optional string caption = 20;
+  }
+
+  message EncReactionMessage {
+    optional MessageKey target_message_key = 1;
+    optional bytes enc_payload = 2;
+    optional bytes enc_iv = 3;
+  }
+
+  message ExtendedTextMessage {
+    optional string text = 1;
+    optional string matched_text = 2;
+    optional string canonical_url = 4;
+    optional string description = 5;
+    optional string title = 6;
+    optional fixed32 text_argb = 7;
+    optional fixed32 background_argb = 8;
+    optional FontType font = 9;
+    optional PreviewType preview_type = 10;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+    optional bool doNotPlayInline = 18;
+    optional string thumbnail_direct_path = 19;
+    optional bytes thumbnail_sha256 = 20;
+    optional bytes thumbnail_enc_sha256 = 21;
+    optional bytes media_key = 22;
+    optional int64 media_key_timestamp = 23;
+    optional uint32 thumbnail_height = 24;
+    optional uint32 thumbnail_width = 25;
+    optional InviteLinkGroupType invite_link_group_type = 26;
+    optional string invite_link_parent_group_subject_v2 = 27;
+    optional bytes invite_link_parent_group_thumbnail_v2 = 28;
+    optional InviteLinkGroupType invite_link_group_type_v2 = 29;
+
+    enum FontType {
+      SANS_SERIF = 0;
+      SERIF = 1;
+      NORICAN_REGULAR = 2;
+      BRYNDAN_WRITE = 3;
+      BEBASNEUE_REGULAR = 4;
+      OSWALD_HEAVY = 5;
+    }
+
+    enum InviteLinkGroupType {
+      DEFAULT = 0;
+      PARENT = 1;
+      SUB = 2;
+      DEFAULT_SUB = 3;
+    }
+
+    enum PreviewType {
+      NONE = 0;
+      VIDEO = 1;
+    }
+  }
+
+  message FutureProofMessage {
+    optional Message message = 1;
+  }
+
+  message GroupInviteMessage {
+    optional string group_jid = 1;
+    optional string invite_code = 2;
+    optional int64 invite_expiration = 3;
+    optional string group_name = 4;
+    optional bytes jpeg_thumbnail = 5;
+    optional string caption = 6;
+    optional ContextInfo context_info = 7;
+    optional GroupType group_type = 8;
+
+    enum GroupType {
+      DEFAULT = 0;
+      PARENT = 1;
+    }
+  }
+
+  message HighlyStructuredMessage {
+    optional string namespace = 1;
+    optional string element_name = 2;
+    repeated string params = 3;
+    optional string fallback_lg = 4;
+    optional string fallback_lc = 5;
+    repeated HSMLocalizableParameter localizable_params = 6;
+    optional string deterministic_lg = 7;
+    optional string deterministic_lc = 8;
+    optional TemplateMessage hydrated_hsm = 9;
+
+    message HSMLocalizableParameter {
+      optional string default = 1;
+
+      oneof param_oneof {
+        HSMCurrency currency = 2;
+        HSMDateTime date_time = 3;
+      }
+
+      message HSMCurrency {
+        optional string currency_code = 1;
+        optional int64 amount_1000 = 2;
+      }
+
+      message HSMDateTime {
+        oneof datetime_oneof {
+          HSMDateTimeComponent component = 1;
+          HSMDateTimeUnixEpoch unix_epoch = 2;
+        }
+
+        message HSMDateTimeComponent {
+          optional DayOfWeekType day_of_week = 1;
+          optional uint32 year = 2;
+          optional uint32 month = 3;
+          optional uint32 day_of_month = 4;
+          optional uint32 hour = 5;
+          optional uint32 minute = 6;
+          optional CalendarType calendar = 7;
+
+          enum CalendarType {
+            GREGORIAN = 1;
+            SOLAR_HIJRI = 2;
+          }
+
+          enum DayOfWeekType {
+            MONDAY = 1;
+            TUESDAY = 2;
+            WEDNESDAY = 3;
+            THURSDAY = 4;
+            FRIDAY = 5;
+            SATURDAY = 6;
+            SUNDAY = 7;
+          }
+        }
+
+        message HSMDateTimeUnixEpoch {
+          optional int64 timestamp = 1;
+        }
+      }
+    }
+  }
+
+  message HistorySyncNotification {
+    optional bytes file_sha256 = 1;
+    optional uint64 file_length = 2;
+    optional bytes media_key = 3;
+    optional bytes file_enc_sha256 = 4;
+    optional string direct_path = 5;
+    optional HistorySyncType sync_type = 6;
+    optional uint32 chunk_order = 7;
+    optional string original_message_id = 8;
+    optional uint32 progress = 9;
+    optional int64 oldest_msg_in_chunk_timestamp_sec = 10;
+
+    enum HistorySyncType {
+      INITIAL_BOOTSTRAP = 0;
+      INITIAL_STATUS_V3 = 1;
+      FULL = 2;
+      RECENT = 3;
+      PUSH_NAME = 4;
+      NON_BLOCKING_DATA = 5;
+    }
+  }
+
+  message ImageMessage {
+    optional string url = 1;
+    optional string mimetype = 2;
+    optional string caption = 3;
+    optional bytes file_sha256 = 4;
+    optional uint64 file_length = 5;
+    optional uint32 height = 6;
+    optional uint32 width = 7;
+    optional bytes media_key = 8;
+    optional bytes file_enc_sha256 = 9;
+    repeated InteractiveAnnotation interactive_annotations = 10;
+    optional string direct_path = 11;
+    optional int64 media_key_timestamp = 12;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+    optional bytes first_scan_sidecar = 18;
+    optional uint32 first_scan_length = 19;
+    optional uint32 experiment_group_id = 20;
+    optional bytes scans_sidecar = 21;
+    repeated uint32 scan_lengths = 22;
+    optional bytes mid_quality_file_sha256 = 23;
+    optional bytes mid_quality_file_enc_sha256 = 24;
+    optional bool view_once = 25;
+    optional string thumbnail_direct_path = 26;
+    optional bytes thumbnail_sha256 = 27;
+    optional bytes thumbnail_enc_sha256 = 28;
+    optional string static_url = 29;
+  }
+
+  message InitialSecurityNotificationSettingSync {
+    optional bool security_notification_enabled = 1;
+  }
+
+  message InteractiveMessage {
+    optional Header header = 1;
+    optional Body body = 2;
+    optional Footer footer = 3;
+    optional ContextInfo context_info = 15;
+
+    oneof interactive_message {
+      ShopMessage shop_storefront_message = 4;
+      CollectionMessage collection_message = 5;
+      NativeFlowMessage native_flow_message = 6;
+    }
+
+    message Body {
+      optional string text = 1;
+    }
+
+    message CollectionMessage {
+      optional string biz_jid = 1;
+      optional string id = 2;
+      optional int32 message_version = 3;
+    }
+
+    message Footer {
+      optional string text = 1;
+    }
+
+    message Header {
+      optional string title = 1;
+      optional string subtitle = 2;
+      optional bool has_media_attachment = 5;
+
+      oneof media {
+        DocumentMessage document_message = 3;
+        ImageMessage image_message = 4;
+        bytes jpeg_thumbnail = 6;
+        VideoMessage video_message = 7;
+      }
+    }
+
+    message NativeFlowMessage {
+      repeated NativeFlowButton buttons = 1;
+      optional string message_params_json = 2;
+      optional int32 message_version = 3;
+
+      message NativeFlowButton {
+        optional string name = 1;
+        optional string button_params_json = 2;
+      }
+    }
+
+    message ShopMessage {
+      optional string id = 1;
+      optional Surface surface = 2;
+      optional int32 message_version = 3;
+
+      enum Surface {
+        UNKNOWN_SURFACE = 0;
+        FB = 1;
+        IG = 2;
+        WA = 3;
+      }
+    }
+  }
+
+  message InteractiveResponseMessage {
+    optional Body body = 1;
+    optional ContextInfo context_info = 15;
+
+    oneof interactive_response_message {
+      NativeFlowResponseMessage native_flow_response_message = 2;
+    }
+
+    message Body {
+      optional string text = 1;
+    }
+
+    message NativeFlowResponseMessage {
+      optional string name = 1;
+      optional string params_json = 2;
+      optional int32 version = 3;
+    }
+  }
+
+  message KeepInChatMessage {
+    optional MessageKey key = 1;
+    optional KeepInChatType keep_type = 2;
+    optional int64 timestamp_ms = 3;
+  }
+
+  message ListMessage {
+    optional string title = 1;
+    optional string description = 2;
+    optional string button_text = 3;
+    optional ListType list_type = 4;
+    repeated Section sections = 5;
+    optional ProductListInfo product_list_info = 6;
+    optional string footer_text = 7;
+    optional ContextInfo context_info = 8;
+
+    enum ListType {
+      UNKNOWN = 0;
+      SINGLE_SELECT = 1;
+      PRODUCT_LIST = 2;
+    }
+
+    message Product {
+      optional string product_id = 1;
+    }
+
+    message ProductListHeaderImage {
+      optional string product_id = 1;
+      optional bytes jpeg_thumbnail = 2;
+    }
+
+    message ProductListInfo {
+      repeated ProductSection product_sections = 1;
+      optional ProductListHeaderImage header_image = 2;
+      optional string business_owner_jid = 3;
+    }
+
+    message ProductSection {
+      optional string title = 1;
+      repeated Product products = 2;
+    }
+
+    message Row {
+      optional string title = 1;
+      optional string description = 2;
+      optional string row_id = 3;
+    }
+
+    message Section {
+      optional string title = 1;
+      repeated Row rows = 2;
+    }
+  }
+
+  message ListResponseMessage {
+    optional string title = 1;
+    optional ListType list_type = 2;
+    optional SingleSelectReply single_select_reply = 3;
+    optional ContextInfo context_info = 4;
+    optional string description = 5;
+
+    enum ListType {
+      UNKNOWN = 0;
+      SINGLE_SELECT = 1;
+    }
+
+    message SingleSelectReply {
+      optional string selected_row_id = 1;
+    }
+  }
+
+  message LiveLocationMessage {
+    optional double degrees_latitude = 1;
+    optional double degrees_longitude = 2;
+    optional uint32 accuracy_in_meters = 3;
+    optional float speed_in_mps = 4;
+    optional uint32 degrees_clockwise_from_magnetic_north = 5;
+    optional string caption = 6;
+    optional int64 sequence_number = 7;
+    optional uint32 time_offset = 8;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+  }
+
+  message LocationMessage {
+    optional double degrees_latitude = 1;
+    optional double degrees_longitude = 2;
+    optional string name = 3;
+    optional string address = 4;
+    optional string url = 5;
+    optional bool is_live = 6;
+    optional uint32 accuracy_in_meters = 7;
+    optional float speed_in_mps = 8;
+    optional uint32 degrees_clockwise_from_magnetic_north = 9;
+    optional string comment = 11;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+  }
+
+  message OrderMessage {
+    optional string order_id = 1;
+    optional bytes thumbnail = 2;
+    optional int32 item_count = 3;
+    optional OrderStatus status = 4;
+    optional OrderSurface surface = 5;
+    optional string message = 6;
+    optional string order_title = 7;
+    optional string seller_jid = 8;
+    optional string token = 9;
+    optional int64 total_amount_1000 = 10;
+    optional string total_currency_code = 11;
+    optional ContextInfo context_info = 17;
+
+    enum OrderStatus {
+      INQUIRY = 1;
+    }
+
+    enum OrderSurface {
+      CATALOG = 1;
+    }
+  }
+
+  message PaymentInviteMessage {
+    optional ServiceType service_type = 1;
+    optional int64 expiry_timestamp = 2;
+
+    enum ServiceType {
+      UNKNOWN = 0;
+      FBPAY = 1;
+      UPI = 3;
+    }
+  }
+
+  message PeerDataOperationRequestMessage {
+    optional PeerDataOperationRequestType peer_data_operation_request_type = 1;
+    repeated RequestStickerReupload request_sticker_reupload = 2;
+    repeated RequestUrlPreview request_url_preview = 3;
+
+    message RequestStickerReupload {
+      optional string file_sha256 = 1;
+    }
+
+    message RequestUrlPreview {
+      optional string url = 1;
+    }
+  }
+
+  message PeerDataOperationRequestResponseMessage {
+    optional PeerDataOperationRequestType peer_data_operation_request_type = 1;
+    optional string stanza_id = 2;
+    repeated PeerDataOperationResult peer_data_operation_result = 3;
+
+    message PeerDataOperationResult {
+      optional MediaRetryNotification.ResultType media_upload_result = 1;
+      optional StickerMessage sticker_message = 2;
+      optional LinkPreviewResponse link_preview_response = 3;
+
+      message LinkPreviewResponse {
+        optional string url = 1;
+        optional string title = 2;
+        optional string description = 3;
+        optional bytes thumb_data = 4;
+        optional string canonical_url = 5;
+        optional string match_text = 6;
+        optional string preview_type = 7;
+      }
+
+      message MediaRetryNotification {
+        enum ResultType {
+          GENERAL_ERROR = 0;
+          SUCCESS = 1;
+          NOT_FOUND = 2;
+          DECRYPTION_ERROR = 3;
+        }
+      }
+    }
+  }
+
+  message PollCreationMessage {
+    optional bytes enc_key = 1;
+    optional string name = 2;
+    repeated Option options = 3;
+    optional uint32 selectable_options_count = 4;
+    optional ContextInfo context_info = 5;
+
+    message Option {
+      optional string option_name = 1;
+    }
+  }
+
+  message PollEncValue {
+    optional bytes enc_payload = 1;
+    optional bytes enc_iv = 2;
+  }
+
+  message PollUpdateMessage {
+    optional MessageKey poll_creation_message_key = 1;
+    optional PollEncValue vote = 2;
+    optional PollUpdateMessageMetadata metadata = 3;
+    optional int64 sender_timestamp_ms = 4;
+  }
+
+  message PollUpdateMessageMetadata {
+  }
+
+  message ProductMessage {
+    optional ProductSnapshot product = 1;
+    optional string business_owner_jid = 2;
+    optional string body = 5;
+    optional string footer = 6;
+    optional ContextInfo context_info = 17;
+
+    message ProductSnapshot {
+      optional ImageMessage product_image = 1;
+      optional string product_id = 2;
+      optional string title = 3;
+      optional string description = 4;
+      optional string currency_code = 5;
+      optional int64 price_amount_1000 = 6;
+      optional string retailer_id = 7;
+      optional string url = 8;
+      optional uint32 product_image_count = 9;
+      optional string first_image_id = 11;
+      optional int64 sale_price_amount_1000 = 12;
+    }
+  }
+
+  message ProtocolMessage {
+    optional MessageKey key = 1;
+    optional Type type = 2;
+    optional uint32 ephemeral_expiration = 4;
+    optional HistorySyncNotification history_sync_notification = 6;
+    optional AppStateSyncKeyShare app_state_sync_key_share = 7;
+    optional AppStateSyncKeyRequest app_state_sync_key_request = 8;
+    optional InitialSecurityNotificationSettingSync initial_security_notification_setting_sync = 9;
+    optional AppStateFatalExceptionNotification app_state_fatal_exception_notification = 10;
+    optional DisappearingMode disappearing_mode = 11;
+    optional Message edited_message = 14;
+    optional int64 timestamp_ms = 15;
+    optional PeerDataOperationRequestMessage peer_data_operation_request_message = 16;
+    optional PeerDataOperationRequestResponseMessage peer_data_operation_request_response_message = 17;
+
+    enum Type {
+      REVOKE = 0;
+      EPHEMERAL_SETTING = 3;
+      EPHEMERAL_SYNC_RESPONSE = 4;
+      HISTORY_SYNC_NOTIFICATION = 5;
+      APP_STATE_SYNC_KEY_SHARE = 6;
+      APP_STATE_SYNC_KEY_REQUEST = 7;
+      INITIAL_SECURITY_NOTIFICATION_SETTING_SYNC = 9;
+      APP_STATE_FATAL_EXCEPTION_NOTIFICATION = 10;
+      SHARE_PHONE_NUMBER = 11;
+      MESSAGE_EDIT = 14;
+      PEER_DATA_OPERATION_REQUEST_MESSAGE = 16;
+      PEER_DATA_OPERATION_REQUEST_RESPONSE_MESSAGE = 17;
+    }
+  }
+
+  message ReactionMessage {
+    optional MessageKey key = 1;
+    optional string text = 2;
+    optional string grouping_key = 3;
+    optional int64 sender_timestamp_ms = 4;
+  }
+
+  message RequestPaymentMessage {
+    optional string currency_code_iso4217 = 1;
+    optional uint64 amount_1000 = 2;
+    optional string request_from = 3;
+    optional Message note_message = 4;
+    optional int64 expiry_timestamp = 5;
+    optional Money amount = 6;
+    optional PaymentBackground background = 7;
+  }
+
+  message RequestPhoneNumberMessage {
+    optional ContextInfo context_info = 1;
+  }
+
+  message SenderKeyDistributionMessage {
+    optional string group_id = 1;
+    optional bytes axolotl_sender_key_distribution_message = 2;
+  }
+
+  message SendPaymentMessage {
+    optional Message note_message = 2;
+    optional MessageKey request_message_key = 3;
+    optional PaymentBackground background = 4;
+  }
+
+  message StickerMessage {
+    optional string url = 1;
+    optional bytes file_sha256 = 2;
+    optional bytes file_enc_sha256 = 3;
+    optional bytes media_key = 4;
+    optional string mimetype = 5;
+    optional uint32 height = 6;
+    optional uint32 width = 7;
+    optional string direct_path = 8;
+    optional uint64 file_length = 9;
+    optional int64 media_key_timestamp = 10;
+    optional uint32 first_frame_length = 11;
+    optional bytes first_frame_sidecar = 12;
+    optional bool is_animated = 13;
+    optional bytes png_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+    optional int64 sticker_sent_ts = 18;
+    optional bool is_avatar = 19;
+  }
+
+  message TemplateButtonReplyMessage {
+    optional string selected_id = 1;
+    optional string selected_display_text = 2;
+    optional ContextInfo context_info = 3;
+    optional uint32 selected_index = 4;
+  }
+
+  message TemplateMessage {
+    optional ContextInfo context_info = 3;
+    optional HydratedFourRowTemplate hydrated_template = 4;
+    optional string template_id = 9;
+
+    oneof format {
+      FourRowTemplate four_row_template = 1;
+      HydratedFourRowTemplate hydrated_four_row_template = 2;
+      InteractiveMessage interactive_message_template = 5;
+    }
+
+    message FourRowTemplate {
+      optional HighlyStructuredMessage content = 6;
+      optional HighlyStructuredMessage footer = 7;
+      repeated TemplateButton buttons = 8;
+
+      oneof title {
+        DocumentMessage document_message = 1;
+        HighlyStructuredMessage highly_structured_message = 2;
+        ImageMessage image_message = 3;
+        VideoMessage video_message = 4;
+        LocationMessage location_message = 5;
+      }
+    }
+
+    message HydratedFourRowTemplate {
+      optional string hydrated_content_text = 6;
+      optional string hydrated_footer_text = 7;
+      repeated HydratedTemplateButton hydrated_buttons = 8;
+      optional string template_id = 9;
+
+      oneof title {
+        DocumentMessage document_message = 1;
+        string hydrated_title_text = 2;
+        ImageMessage image_message = 3;
+        VideoMessage video_message = 4;
+        LocationMessage location_message = 5;
+      }
+    }
+  }
+
+  message VideoMessage {
+    optional string url = 1;
+    optional string mimetype = 2;
+    optional bytes file_sha256 = 3;
+    optional uint64 file_length = 4;
+    optional uint32 seconds = 5;
+    optional bytes media_key = 6;
+    optional string caption = 7;
+    optional bool gif_playback = 8;
+    optional uint32 height = 9;
+    optional uint32 width = 10;
+    optional bytes file_enc_sha256 = 11;
+    repeated InteractiveAnnotation interactive_annotations = 12;
+    optional string direct_path = 13;
+    optional int64 media_key_timestamp = 14;
+    optional bytes jpeg_thumbnail = 16;
+    optional ContextInfo context_info = 17;
+    optional bytes streaming_sidecar = 18;
+    optional Attribution gif_attribution = 19;
+    optional bool view_once = 20;
+    optional string thumbnail_direct_path = 21;
+    optional bytes thumbnail_sha256 = 22;
+    optional bytes thumbnail_enc_sha256 = 23;
+    optional string static_url = 24;
+
+    enum Attribution {
+      NONE = 0;
+      GIPHY = 1;
+      TENOR = 2;
+    }
+  }
+}
+
+message MessageContextInfo {
+  optional DeviceListMetadata device_list_metadata = 1;
+  optional int32 device_list_metadata_version = 2;
+  optional bytes message_secret = 3;
+}
+
+message MessageKey {
+  optional string remote_jid = 1;
+  optional bool from_me = 2;
+  optional string id = 3;
+  optional string participant = 4;
+}
+
+message Money {
+  optional int64 value = 1;
+  optional uint32 offset = 2;
+  optional string currency_code = 3;
+}
+
+message NoiseCertificate {
+  optional bytes details = 1;
+  optional bytes signature = 2;
+
+  message Details {
+    optional uint32 serial = 1;
+    optional string issuer = 2;
+    optional uint64 expires = 3;
+    optional string subject = 4;
+    optional bytes key = 5;
+  }
+}
+
+message PaymentBackground {
+  optional string id = 1;
+  optional uint64 file_length = 2;
+  optional uint32 width = 3;
+  optional uint32 height = 4;
+  optional string mimetype = 5;
+  optional fixed32 placeholder_argb = 6;
+  optional fixed32 text_argb = 7;
+  optional fixed32 subtext_argb = 8;
+  optional MediaData media_data = 9;
+  optional Type type = 10;
+
+  enum Type {
+    UNKNOWN = 0;
+    DEFAULT = 1;
+  }
+
+  message MediaData {
+    optional bytes media_key = 1;
+    optional int64 media_key_timestamp = 2;
+    optional bytes file_sha256 = 3;
+    optional bytes file_enc_sha256 = 4;
+    optional string direct_path = 5;
+  }
+}
+
+message Point {
+  optional int32 x_deprecated = 1;
+  optional int32 y_deprecated = 2;
+  optional double x = 3;
+  optional double y = 4;
+}
+
+message TemplateButton {
+  optional uint32 index = 4;
+
+  oneof button {
+    QuickReplyButton quick_reply_button = 1;
+    URLButton url_button = 2;
+    CallButton call_button = 3;
+  }
+
+  message CallButton {
+    optional Message.HighlyStructuredMessage display_text = 1;
+    optional Message.HighlyStructuredMessage phone_number = 2;
+  }
+
+  message QuickReplyButton {
+    optional Message.HighlyStructuredMessage display_text = 1;
+    optional string id = 2;
+  }
+
+  message URLButton {
+    optional Message.HighlyStructuredMessage display_text = 1;
+    optional Message.HighlyStructuredMessage url = 2;
+  }
+}
+
+message VerifiedNameCertificate {
+  optional bytes details = 1;
+  optional bytes signature = 2;
+  optional bytes server_signature = 3;
+
+  message Details {
+    optional uint64 serial = 1;
+    optional string issuer = 2;
+    optional uint64 expires = 3;
+    optional string verified_name = 4;
+    optional string industry = 5;
+    optional string city = 6;
+    optional string country = 7;
+    repeated LocalizedName localized_names = 8;
+    optional uint64 aggregator_id = 9;
+    optional uint64 issue_time = 10;
+  }
+}

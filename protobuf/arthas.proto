@@ -1,0 +1,529 @@
+syntax = "proto3";
+
+option go_package = "./protobuf";
+
+// 定义动作枚举
+enum Action {
+  LOGIN = 0;
+  LOGOUT = 1;
+  ERR_STOP = 31;
+
+  //whatsapp
+  SEND_MESSAGE = 2;
+  SEND_GROUP_MESSAGE = 3;
+  SYNC_ACCOUNT_KEY = 4; // 添加同步帐号密钥动作
+  GET_PREKEYBUNDLE = 5;
+  SYNC_CONTACTS = 6;
+  PING_PONG = 7;
+  SEND_VCARD_MESSAGE = 8;
+  SET_HEAD_SCULPTURE = 9;
+  GET_USER_HEAD_IMAGE = 10;
+  SEND_VIDEO = 18;
+
+  //telegram
+  SYNC_APP_INFO = 11;
+  RECEIVING_MSG = 12;
+  SEND_PHOTO = 13;
+  SEND_FILE = 14;
+  SEND_CONTACT_CARD = 15;
+  CREATE_GROUP = 16;
+  ADD_GROUP_MEMBER = 17;
+  GET_GROUP_MEMBERS = 23;
+  SEND_CODE = 19;
+  CONTACT_LIST = 20;
+  DIALOG_LIST = 21;
+  Get_MSG_HISTORY = 22;
+  CREATE_CHANNEL = 24;
+  DOWNLOAD_FILE = 25;
+  INVITE_TO_CHANNEL = 26;
+  IMPORT_TG_SESSION = 27;
+  JOIN_BY_LINK = 28;
+  GET_EMOJI_GROUP=29;
+  MESSAGES_REACTION=30;
+  LEAVE = 32;
+  GET_CHANNEL_MEMBER = 33;
+  GET_ONLINE_ACCOUNTS = 34;
+}
+
+
+// 定义普通动作消息
+//message OrdinaryAction {
+//  repeated uint64 account_ids = 1; // 帐号的数组
+//}
+
+message OrdinaryAction {
+  map<uint64, loginDetail> login_detail = 1;
+  string Type = 2;
+}
+
+message LogoutAction {
+  map<uint64, logoutDetail> logout_detail = 1;
+  string Type = 2;
+}
+
+message loginDetail {
+  string proxyUrl = 1;
+  string loginId = 2;  //登录的id 用来收验证码
+  TgDeviceConfig tgDevice = 3; // 登录设备信息
+}
+
+message TgDeviceConfig {
+  string deviceModel = 1;
+  string SystemVersion = 2;
+  string AppVersion = 3;
+  string LangCode = 4;
+  string SystemLangCode = 5;
+  string LangPack = 6;
+
+}
+
+message logoutDetail {
+  string proxyUrl = 1;
+}
+
+
+message GetUserHeadImageAction{
+  map<uint64, getUserHeadImage> head_image = 1;
+}
+
+message getUserHeadImage{
+  repeated uint64 account = 1;
+}
+
+// 定义头像
+message HeadSculpture{
+  bytes  image = 1;
+  uint64 account = 2;
+}
+
+// 修改头像信息
+message SetHeadSculptureAction {
+  HeadSculpture HeadSculptrue_data = 1;
+}
+
+
+//定义明信片
+message VCard{
+  string Fn = 1;
+  string Tel = 2;
+}
+
+// 定义明信片消息
+message SendVCardMsgDetail {
+  repeated SendVCardMsgDetailAction details = 1;
+}
+
+message SendMessageDetail {
+  repeated SendMessageAction details = 1;
+}
+
+//定义telegram app 信息
+message appData {
+  uint64 appId = 1;
+  string appHash = 2;
+}
+
+// 定义密钥数据
+message KeyData {
+  bytes privatekey = 1;
+  bytes privateMsgKey = 2;
+  bytes resumptionSecret = 3;
+  bytes publickey = 4;
+  bytes publicMsgKey = 5;
+  bytes clientPayload = 6;
+  bytes identify = 7;
+}
+
+// 定义同步帐号密钥动作消息
+message SyncAccountKeyAction {
+  map<uint64, KeyData> key_data = 1;
+}
+
+//定义同步app信息动作消息
+message SyncAppInfoAction {
+  map<uint64, appData> app_data = 1;
+}
+
+
+
+// 定义总的消息
+message RequestMessage {
+  Action action = 1; // 动作字段
+  oneof action_detail {
+    OrdinaryAction ordinary_action = 2;
+    SyncAccountKeyAction sync_account_key_action = 3;
+    SyncAppInfoAction   sync_app_action = 4;
+    QueryPreKeyBundleDetail query_prekeybundle_detail = 7;
+    SendMessageDetail  sendmessage_detail = 8 ;
+    string  ping_message = 9;
+    SendVCardMsgDetail send_vcard_message = 10;
+    SetHeadSculptureAction set_head_sculpture_action = 11;
+    GetUserHeadImageAction get_user_head_image = 12;
+    SyncContactDetail      sync_contact_detail = 13;
+    ReceivingMsgDetail      receive_msg_detail = 14;
+    SendPhotoDetail  send_photo_detail = 15;
+    CreateGroupDetail       create_group_detail = 16;
+    AddGroupMemberDetail     add_group_member_detail = 17;
+    GetGroupMembersDetail get_group_members_detail = 29;
+    SendImageFileDetail  send_image_file_detail = 19;
+    SendContactCardDetail send_contact_card_detail = 20;
+    SendGroupMessageDetail send_group_message_detail = 21;
+    SendFileDetail  send_file_detail = 22;
+    SendVideoDetail send_video_detail = 23;
+    SendCodeDetail send_code_detail = 24;
+    GetContactList      get_contact_list = 25;
+    GetDialogList  get_dialog_list = 26;
+    GetMsgHistory  get_msg_history = 27;
+    LogoutAction     logout_action = 28;
+    CreateChannelDetail create_channel_detail = 30;
+    GetDownLoadFileDetail get_downLoad_file_detail = 31;
+    ImportTgSessionDetail import_tg_session = 33;
+    InviteToChannelDetail invite_to_channel_detail = 32;
+    JoinByLinkDetail join_by_link_detail = 34;
+    GetEmojiGroupsDetail get_emoji_group_detail = 36;
+    MessagesReactionDetail messages_reaction_detail = 37;
+      LeaveDetail leave_detail = 38;
+      GetChannelMemberDetail get_channel_member_detail = 39;
+      GetOnlineAccountsDetail get_online_accounts_detail = 40;
+  }
+  string type = 18;
+  uint64 account = 35; //账号
+
+}
+
+message UintkeyUintvalue {
+  uint64 key = 1;
+  repeated uint64 values = 2;
+}
+
+message UintkeyStringvalue {
+  uint64 key = 1;
+  repeated string values = 2;
+}
+
+message StringKeyStringvalue{
+  string key = 1;
+  repeated string values = 2;
+}
+
+message UintSenderVcard{
+  uint64 Receiver = 1;
+  repeated VCard vcards = 2;
+}
+
+message SendMessageAction {
+  map<uint64, UintkeyStringvalue> send_data = 1;
+  map<uint64, StringKeyStringvalue> send_tgData = 2;
+}
+
+message SendVCardMsgDetailAction {
+  map<uint64, UintSenderVcard> send_data = 1;
+}
+
+message SendGroupMessageAction {
+  map<uint64, StringKeyStringvalue> send_data = 1;
+}
+
+message SendPhotoAction{
+  map<uint64, UintkeyStringvalue> send_data = 1;
+}
+
+
+message UintFileDetailValue{
+  uint64 key = 1;
+  repeated FileDetailValue value = 2;
+}
+
+message UintTgFileDetailValue{
+  string key = 1;
+  repeated FileDetailValue value = 2;
+}
+
+message UintSendContactCard {
+  uint64 key = 1;
+  uint64 sender = 2;
+  string receiver = 3;
+  repeated ContactCardValue value = 4;
+}
+
+
+message ContactCardValue{
+  string FirstName = 1;
+  string LastName = 2;
+  string PhoneNumber = 3;
+}
+
+message FileDetailValue{
+  string FileType = 1;
+  string SendType = 2;
+  string Path = 3;
+  bytes  FileByte = 4;
+  string Name = 5;
+}
+
+message SendGroupMessageDetail {
+  repeated SendGroupMessageAction details = 1;
+}
+
+
+message SendPhotoDetail {
+  repeated SendPhotoAction details = 1;
+}
+
+message SendFileDetail{
+  repeated SendFileAction details = 1;
+}
+
+message  SendCodeDetail{
+  sendCodeAction details = 1;
+}
+
+message GetContactList{
+  uint64 Account = 1;
+}
+
+message GetDialogList{
+  uint64 Account = 1;
+}
+
+message GetDownLoadFileDetail{
+  map<uint64, DownLoadFileMsg> download_file = 1;
+}
+
+message DownLoadFileMsg{
+  int64 chatId = 1;
+  int64 messageId = 2;
+}
+
+message GetMsgHistory{
+  uint64 Self = 1;
+  string  Other = 2;
+  int32  Limit = 3;
+  int64   OffsetDat = 4;
+  int64  OffsetID = 5;
+  int64  MaxID = 6;
+  int64  MinID = 7;
+}
+
+message sendCodeAction{
+  map<uint64, string> send_code = 1;
+  string loginId = 2;
+  bool   flag = 3;
+  string comments = 4;
+}
+
+
+
+message SendVideoDetail{
+  repeated SendFileAction details = 1;
+}
+
+message SendImageFileDetail{
+  repeated SendFileAction details = 1;
+}
+
+message SendContactCardDetail{
+  repeated SendContactCardAction detail = 1;
+}
+
+message  ReceivingMsgDetail {
+  uint64 Receiver = 1;
+}
+
+message  CreateGroupDetail {
+  string GroupName = 1;
+  UintkeyStringvalue detail = 2;
+}
+
+message CreateChannelDetail {
+  string ChannelTitle = 1;
+  string   ChannelUserName = 2;
+  string   ChannelDescription = 3;
+  UintkeyStringvalue detail = 4;
+  bool IsChannel =5;
+  bool IsSuperGroup =6;
+}
+
+message  AddGroupMemberDetail {
+  string GroupName = 1;
+  UintkeyStringvalue detail = 2;
+}
+
+message GetChannelMemberDetail {
+  uint64 Sender = 1;
+  string Channel = 2;
+  int64  Offset =3;
+  int64 Limit  = 4;
+  string  SearchType =5;
+  int64 TopMsgId =6;
+}
+
+message GetOnlineAccountsDetail {
+  repeated string phone = 1;
+}
+
+message  InviteToChannelDetail {
+  string Channel = 1;
+  UintkeyStringvalue detail = 2;
+}
+
+message ImportTgSessionDetail{
+  uint64 account = 1;
+  map<uint64, ImportTgSessionMsg> send_data = 2;
+}
+
+message ImportTgSessionMsg{
+  int32   DC = 1;
+  string  Addr = 2;
+  bytes  AuthKey = 3;
+  ImportTgDeviceMsg DeviceMsg = 4;
+}
+
+message ImportTgDeviceMsg{
+  uint64 AppId = 1;
+  string AppHash = 2;
+
+  string DeviceModel = 3;
+  string SystemVersion = 4;
+  string AppVersion = 5;
+  string LangCode = 6;
+  string SystemLangCode = 7;
+  string LangPack = 8 ;
+}
+
+
+
+message ImportTgSessionDetailAction{
+
+}
+
+message JoinByLinkDetail {
+  UintkeyStringvalue detail = 1;
+}
+
+message GetEmojiGroupsDetail {
+  uint64 Sender =1;
+}
+
+message MessagesReactionDetail{
+  string Emotion = 1;
+  UintkeyUintvalue detail = 2;
+  string Receiver = 3;
+}
+
+message LeaveDetail {
+  UintkeyStringvalue detail = 1;
+}
+
+
+message  GetGroupMembersDetail {
+  uint64 Account = 1;
+  int64 ChatId = 2;
+}
+
+message QueryPreKeyBundleDetail {
+  repeated UintkeyUintvalue details = 1;
+}
+
+message SyncContactDetail {
+  repeated UintkeyUintvalue details = 1;
+}
+
+message SetHeadSculptureDetail{
+  repeated SetHeadSculptureAction detail = 1;
+}
+
+// 定义动作的返回状态枚举
+enum ActionResult {
+  ALL_SUCCESS = 0;
+  PARTIAL_SUCCESS = 1;
+  ALL_FAIL = 2;
+  ALL_UNKNOWN = 3;
+  PONG = 4;
+  LOGIN_NEED_CODE = 5;
+  LOGIN_VERIFY_CODE_FAIL = 6;
+  RUN_TIME_OUT = 7;
+}
+
+// 定义单个帐号的执行状态枚举
+enum AccountStatus {
+  SUCCESS = 0;   //成功
+  FAIL = 1;      //失败
+  UNKNOWN = 2;   //未知
+  NOT_EXIST = 3; //账号不存在
+  PROXY_ERR = 4; // 代理地址报错
+  SEAL = 403; //登录失败，已封号
+  PERMISSION = 401; // 登录失败，权限错误
+  NEED_SEND_CODE = 5; // 需要发送验证码
+  LOGIN_CODE_FAIL = 6;// 验证码错误
+  LOGOUT_FAIL = 7;// 登出失败
+  LOGIN_SESSION_CORRUPTED = 8;//登录session损坏
+}
+
+// 定义返回消息
+message ResponseMessage {
+  ActionResult action_result = 1; // 动作的返回状态
+  map<string, AccountStatus> account_status = 2; // 帐号的执行状态字典
+  string   pong_message = 3;
+  oneof callbackInfo {
+    LoginCallbacks login_callbacks = 4;
+    TextMsgCallbacks text_msg_callbacks = 5;
+    ReadMsgCallbacks read_msg_callbacks = 6;
+  }
+  string   login_id = 7;
+  string   account = 8;
+  string   comment = 9;
+  bytes    data = 10;
+  AccountStatus respond_account_status = 11; // 账号的执行返回状态
+}
+message LoginCallbacks{
+  repeated LoginCallback results = 1;
+}
+message LoginCallback{
+  uint64 userJid = 1;
+  AccountStatus loginStatus = 2;
+  string proxyUrl = 3;
+  string comment = 4;
+}
+
+message TextMsgCallbacks{
+  repeated TextMsgCallback results = 1;
+}
+
+message SendFileAction{
+  map<uint64, UintFileDetailValue> send_data = 1;
+  map<uint64, UintTgFileDetailValue> send_tgData = 2;
+  string  Type = 3;
+}
+
+message SendContactCardAction{
+  map<uint64, UintSendContactCard> send_data = 1;
+  string Type = 2;
+}
+
+
+message TextMsgCallback{
+  uint64 sender = 1;     //发送人
+  uint64 receiver = 2;  //接收人
+  string sendText = 3; //消息内容
+  int64 sendTime = 4;  //发送时间
+  string reqId = 5; //请求id
+  bool  read = 6 ;//已读
+}
+
+message ReadMsgCallbacks{
+  repeated ReadMsgCallback results = 1;
+}
+
+message ReadMsgCallback{
+  string reqId = 1;
+}
+
+service Arthas {
+  rpc connect(RequestMessage) returns(ResponseMessage);
+}
+
+service ArthasStream {
+  rpc connect(stream RequestMessage) returns(stream ResponseMessage);
+}
+
